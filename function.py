@@ -4,6 +4,7 @@ from time import sleep
 import os 
 from upload_log import upload
 import time
+from selenium.webdriver.common.by import By
 VIDEOS_FOLDER = "video"
 url="https://mayarecipes.netlify.app/"
 
@@ -41,7 +42,7 @@ def post(driver):
         return
     title=video.replace("_","").replace(".mp4","")
     file_path = os.path.join(VIDEOS_FOLDER, video)
-    driver.choose_file("#storyboard-upload-input", file_path)
+    driver.find_element(By.CSS_SELECTOR,"#storyboard-upload-input").send_keys(file_path)
     time.sleep(3)
     try:
         driver.click("#storyboard-selector-title")
