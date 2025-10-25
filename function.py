@@ -41,7 +41,7 @@ def post(driver):
         driver.quit()
         return
     title=video.replace("_","").replace(".mp4","")
-    file_path = os.path.join(VIDEOS_FOLDER, video)
+    file_path = os.path.abspath(os.path.join(VIDEOS_FOLDER, video))
     driver.find_element(By.CSS_SELECTOR,"#storyboard-upload-input").send_keys(file_path)
     time.sleep(3)
     try:
