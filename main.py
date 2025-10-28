@@ -1,4 +1,4 @@
-from function import setup,post
+from function import post,setup
 if __name__ == "__main__":
-    driver=setup()
+    driver = setup()
     post(driver)
