@@ -1,4 +1,4 @@
-from seleniumbase import Driver
+from seleniumbase import SB
 import json
 import os
 import time
@@ -6,31 +6,15 @@ from upload_log import upload
 import random
 
 VIDEOS_FOLDER = "video"
-decs="Credit to the onwer"
-url="https://www.pinterest.com"
-def setup():
-    with Driver(uc=True) as sb:
-        url = "https://www.pinterest.com"
-        sb.get(url)
-        with open("unused.json", "r") as file:
-            cookies = json.load(file)
+desc = "Credit to the owner"
+url = "https://www.pinterest.com"
 
-        for cookie in cookies:
-            cookie.pop("sameSite", None)
-            cookie.pop("expiry", None)
-            sb.add_cookie(cookie)
-
-        # Navigate to upload page
-        sb.open("https://www.pinterest.com/pin-creation-tool/")
-        sb.sleep(20)
-        return sb
 def get_tag():
     with open("tag.txt","r") as f:
-        tag=f.readlines()
-    tag=random.choice(tag)
-    return tag
+        tag = f.readlines()
+    return random.choice(tag).strip()
+
 def check():
-    """Get next video to upload. Return None if all uploaded."""
     videos = sorted(os.listdir(VIDEOS_FOLDER))
     videos = [v for v in videos if v.endswith(".mp4")]
 
@@ -44,62 +28,54 @@ def check():
             return video
     return None
 
-def post(driver):
+def post(sb):
     video = check()
     if video is None:
         print("All videos are posted")
-        driver.quit()
         return
-    
+
     title = video.replace("_", " ").replace(".mp4", "")
     file_path = os.path.abspath(os.path.join(VIDEOS_FOLDER, video))
-    
     print(f"Starting upload for: {video}")
-    
-    # Upload video
-    driver.find_element("#storyboard-upload-input").send_keys(file_path)
+
+    sb.choose_file("#storyboard-upload-input", file_path)
     print("✓ Video file selected")
     time.sleep(3)
-    
-    # Set title
+
     try:
-        driver.type("#storyboard-selector-title",title)
+        sb.type("#storyboard-selector-title", title)
         print("✓ Title set")
         time.sleep(1)
     except Exception as e:
         print(e)
 
-    # fill url
     try:
-        driver.type("//input[@id='WebsiteField']", "https://www.mayarecipes.netlify.app")
-        print("✓ Set url")
+        sb.type("#WebsiteField", "https://www.mayarecipes.netlify.app")
+        print("✓ Set URL")
         time.sleep(1)
     except Exception as e:
         print("fail url")
-    
-    # add tags
+
     for i in range(3):
         try:
-            driver.find_element("#combobox-storyboard-interest-tags").clear()
-            driver.type(f"#combobox-storyboard-interest-tags",{get_tag()})
-            driver.sleep(5)
+            sb.clear("#combobox-storyboard-interest-tags")
+            sb.type("#combobox-storyboard-interest-tags", get_tag())
+            sb.sleep(5)
             try:
-                driver.click("(//span[@role='option'])[1]")
-                time.sleep(1)
+                sb.click("(//span[@role='option'])[1]")
                 print("✓ Tag set")
-            except Exception as e:
-                print(f"couldnot find tag: {get_tag()}")
+            except:
+                print(f"could not find tag: {get_tag()}")
         except Exception as e:
             print(e)
 
-    #publish
     try:
-        driver.click("//button[.//div[contains(text(), 'Publish')]]")
-        time.sleep(30)
+        sb.wait_for_element("//div[contains(text(),'Publish')]", timeout=10)
+        sb.highlight("//div[contains(text(),'Publish')]")
+        sb.cdp.click("//div[contains(text(),'Publish')]", timeframe=0.25)
+        print("✓ GUI clicked Publish button")
+        sb.sleep(30)
         print("Process completed")
     except Exception as e:
         print(f"Failed to click publish button: {e}")
-        driver.quit()
         return
-    # Final wait and cleanup
-    driver.quit()
