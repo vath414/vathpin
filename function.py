@@ -61,18 +61,18 @@ def post(sb):
             sb.clear("#combobox-storyboard-interest-tags")
             sb.type("#combobox-storyboard-interest-tags", get_tag())
             sb.sleep(5)
+            suggestion=sb.cdp.find_all("div[data-test-id='storyboard-suggestions-item']")
             try:
-                sb.click("(//span[@role='option'])[1]")
+                sb.click(suggestion[0])
                 print("✓ Tag set")
             except:
                 print(f"could not find tag: {get_tag()}")
         except Exception as e:
             print(e)
-
     try:
         sb.wait_for_element("//div[contains(text(),'Publish')]", timeout=10)
         sb.highlight("//div[contains(text(),'Publish')]")
-        sb.cdp.click("//div[contains(text(),'Publish')]", timeframe=0.25)
+        sb.cdp.gui_click_element("//div[contains(text(),'Publish')]")
         print("✓ GUI clicked Publish button")
         sb.sleep(30)
         print("Process completed")
