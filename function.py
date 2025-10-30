@@ -91,7 +91,7 @@ def save_pin(sb):
     print("go to link burger")
     time.sleep(1)
     try: 
-        save_buttons = sb.find_elements("svg[aria-label='Save']")
+        save_buttons = sb.find_all("svg[aria-label='Save']")
         for button in save_buttons:
             sb.click(button)
     except Exception as e:
