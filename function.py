@@ -86,14 +86,9 @@ def post(sb):
         print(f"Failed to click publish button: {e}")
         return
 def save_pin(sb):
-    sb.get("https://www.pinterest.com/MayaRecipes112/burgers-sandwiches/")
+    sb.get("https://www.pinterest.com/MayaRecipes112/burgers-sandwiches/_tools/more-ideas/?ideas_referrer=23")
     time.sleep(3)
-    try:
-        sb.click("//svg[@aria-label='More ideas']")
-        print("click more idea!!")
-    except Exception as e :
-        print(e)
-        sb.quit()
+    print("go to link burger")
     time.sleep(1)
     try: 
         sb.click("//svg[@aria-label='Save']")
