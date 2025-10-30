@@ -91,11 +91,10 @@ def save_pin(sb):
     print("go to link burger")
     time.sleep(1)
     try: 
-        sb.click("//svg[@aria-label='Save']")
+        sb.click("svg[aria-label='Save']")
         print("save pin!!!")
     except Exception as e:
         print(e)
-        sb.quit()
 def scrape(sb):
     sb.get("https://www.pinterest.com/mytastedz/_created/")
     sb.sleep(5)
