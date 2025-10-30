@@ -1,6 +1,7 @@
 from seleniumbase import SB
 import json
 from function import post,scrape,save_pin
+import time
 
 if __name__ == "__main__":
     with SB(uc=True) as sb:
@@ -18,4 +19,13 @@ if __name__ == "__main__":
         sb.sleep(5)
         # Move browser to top-left of screen and resize
         #sb.cdp.set_window_rect(x=0, y=0, width=750, height=450)
-        save_pin(sb)
+        sb.get("https://www.pinterest.com/MayaRecipes112/burgers-sandwiches/_tools/more-ideas/?ideas_referrer=23")
+        time.sleep(3)
+        print("go to link burger")
+        time.sleep(1)
+        try: 
+            save_buttons = sb.cdp.find_all("svg[aria-label='Save']")
+            for button in save_buttons:
+                sb.click(button)
+        except Exception as e:
+            print(e)
