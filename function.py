@@ -91,8 +91,9 @@ def save_pin(sb):
     print("go to link burger")
     time.sleep(1)
     try: 
-        sb.click("svg[aria-label='Save']")
-        print("save pin!!!")
+        save_buttons = sb.find_elements("svg[aria-label='Save']")
+        for button in save_buttons:
+            sb.click(button)
     except Exception as e:
         print(e)
 def scrape(sb):
