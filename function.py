@@ -86,16 +86,7 @@ def post(sb):
         print(f"Failed to click publish button: {e}")
         return
 def save_pin(sb):
-    sb.get("https://www.pinterest.com/MayaRecipes112/burgers-sandwiches/_tools/more-ideas/?ideas_referrer=23")
-    time.sleep(3)
-    print("go to link burger")
-    time.sleep(1)
-    try: 
-        save_buttons = sb.cdp.find_all("svg[aria-label='Save']")
-        for button in save_buttons:
-            sb.click(button)
-    except Exception as e:
-        print(e)
+    pass
 def scrape(sb):
     sb.get("https://www.pinterest.com/mytastedz/_created/")
     sb.sleep(5)

@@ -24,7 +24,8 @@ if __name__ == "__main__":
         print("go to link burger")
         time.sleep(1)
         try: 
-            save_buttons = sb.cdp.find_all("svg[aria-label='Save']")
+            save_buttons = sb.cdp.find_elements("svg[aria-label='Save']")
+            time.sleep(5)
             for button in save_buttons:
                 sb.click(button)
         except Exception as e:
