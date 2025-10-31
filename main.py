@@ -28,5 +28,6 @@ if __name__ == "__main__":
             time.sleep(5)
             for button in save_buttons:
                 button.click()
+                print("button click")
         except Exception as e:
             print(e)
