@@ -25,9 +25,10 @@ if __name__ == "__main__":
         time.sleep(1)
         try: 
             save_buttons = sb.cdp.find_elements("svg[aria-label='Save']")
+            print(save_buttons)
             time.sleep(5)
-            for button in save_buttons:
-                button.click()
+            for i in range(len(save_buttons)):
+                sb.cdp.click(f"(//svg[@aria-label='Save'])[ {i+1} ]")
                 print("button click")
         except Exception as e:
             print(e)
